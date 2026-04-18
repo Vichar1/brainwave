@@ -32,6 +32,7 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://api.fontshare.com", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://api.fontshare.com", "https://cdn.fontshare.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "data:"],
       imgSrc: ["'self'", "data:", "blob:"],
