@@ -148,7 +148,7 @@ export default function teamRoutes(db) {
       }
 
       // Check duplicate USN in DB
-      const duplicateUSNs = db.usnExists(sanitizedParticipants.map(p => p.usn));
+      const duplicateUSNs = await db.usnExists(sanitizedParticipants.map(p => p.usn));
       if (duplicateUSNs.length > 0) {
         return res.status(409).json({
           error: `USN already registered: ${duplicateUSNs.map(u => validator.escape(u)).join(', ')}`
@@ -156,7 +156,7 @@ export default function teamRoutes(db) {
       }
 
       // Check duplicate team name
-      if (db.teamNameExists(trimmedName)) {
+      if (await db.teamNameExists(trimmedName)) {
         return res.status(409).json({ error: 'A team with this name already exists' });
       }
 
