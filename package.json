@@ -1,0 +1,33 @@
+{
+  "name": "brainwave-hackathon",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server/index.js",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
+    "start:prod": "node server/index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "vite": "^8.0.4"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "googleapis": "^171.4.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^11.1.0",
+    "validator": "^13.15.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

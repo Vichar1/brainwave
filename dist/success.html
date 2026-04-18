@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Registration successful — BRAINWAVE" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <title>Success — BRAINWAVE</title>
+  <script type="module" crossorigin src="/assets/success-C15Hp360.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CPaPKTxi.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bbjmy0ho.css">
+</head>
+<body>
+  <div class="noise-overlay" style="opacity: 0.02;"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="success-page" id="successPage">
+    <!-- Animated Check -->
+    <div class="success-check">
+      <div class="success-glow"></div>
+      <svg viewBox="0 0 80 80">
+        <circle class="check-circle" cx="40" cy="40" r="36" stroke-linecap="round" />
+        <polyline class="check-mark" points="24,42 35,53 56,30" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+
+    <h1 class="success-title font-display">You're In!</h1>
+    <p class="success-message">Registration successful. Welcome to the build zone.</p>
+
+    <div class="success-team-id">
+      <div class="team-id-label">Team ID</div>
+      <div class="team-id-value" id="teamIdDisplay">---</div>
+    </div>
+
+    <div class="success-actions">
+      <button class="btn-download" id="btnDownload">↓ Download Receipt</button>
+      <a href="/" class="btn-home">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Hidden Receipt Template -->
+  <div id="receiptTemplate" style="display:none; position:fixed; left:-9999px;">
+    <div class="receipt-preview" id="receiptContent" style="width:360px;"></div>
+  </div>
+
+</body>
+</html>

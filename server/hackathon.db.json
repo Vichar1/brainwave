@@ -1,0 +1,265 @@
+{
+  "teams": [
+    {
+      "teamId": "HK-C05416CF",
+      "teamName": "Alpha Coders",
+      "domain": "AI / Machine Learning",
+      "teamSize": 2,
+      "createdAt": "2026-04-17T10:32:58.217Z"
+    },
+    {
+      "teamId": "HK-7D4E8EC6",
+      "teamName": "g",
+      "domain": "Web Development",
+      "teamSize": 2,
+      "createdAt": "2026-04-17T10:42:54.217Z"
+    },
+    {
+      "teamId": "HK-E4A3F8BE",
+      "teamName": "kitanu",
+      "domain": "Web Development",
+      "teamSize": 2,
+      "createdAt": "2026-04-18T07:10:57.484Z"
+    },
+    {
+      "teamId": "HK-86E5BA3B",
+      "teamName": "aaa",
+      "domain": "Web Development",
+      "teamSize": 2,
+      "createdAt": "2026-04-18T07:13:29.782Z"
+    },
+    {
+      "teamId": "HK-CB15E018",
+      "teamName": "klm",
+      "domain": "IoT / Hardware",
+      "teamSize": 2,
+      "createdAt": "2026-04-18T07:18:36.957Z"
+    },
+    {
+      "teamId": "HK-FE0614B2",
+      "teamName": "jhg",
+      "domain": "Web Development",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T07:21:34.304Z"
+    },
+    {
+      "teamId": "HK-871FBBE0",
+      "teamName": "lelo",
+      "domain": "Blockchain",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T07:34:21.730Z"
+    },
+    {
+      "teamId": "HK-FC63DB66",
+      "teamName": "zbn",
+      "domain": "Mobile App Development",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T07:36:24.671Z"
+    },
+    {
+      "teamId": "HK-0A35E026",
+      "teamName": "zxcvb",
+      "domain": "Cybersecurity",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T07:39:59.283Z"
+    },
+    {
+      "teamId": "HK-1960B35E",
+      "teamName": "JHGF",
+      "domain": "Game Development",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T07:52:24.441Z"
+    },
+    {
+      "teamId": "HK-C873F587",
+      "teamName": "sdfghjk",
+      "domain": "IoT / Hardware",
+      "teamSize": 1,
+      "createdAt": "2026-04-18T08:33:17.364Z"
+    },
+    {
+      "teamId": "HK-521313F5",
+      "teamName": "Garudas",
+      "domain": "Blockchain",
+      "teamSize": 3,
+      "createdAt": "2026-04-18T11:14:11.398Z"
+    }
+  ],
+  "participants": [
+    {
+      "teamId": "HK-C05416CF",
+      "name": "Ravi Kumar",
+      "usn": "2PD21CS001",
+      "branch": "CSE",
+      "phone": "9876543210",
+      "email": "ravi@pdacolleges.in"
+    },
+    {
+      "teamId": "HK-C05416CF",
+      "name": "Priya Singh",
+      "usn": "2PD21CSD002",
+      "branch": "CSD",
+      "phone": "9876543211",
+      "email": "priya@pdacolleges.in"
+    },
+    {
+      "teamId": "HK-7D4E8EC6",
+      "name": "f",
+      "usn": "B66V",
+      "branch": "CSD",
+      "phone": "9007654321",
+      "email": "aa@h.in"
+    },
+    {
+      "teamId": "HK-7D4E8EC6",
+      "name": "fghj",
+      "usn": "CC55FV",
+      "branch": "CSD",
+      "phone": "8422113345",
+      "email": "xxx@li.in"
+    },
+    {
+      "teamId": "HK-E4A3F8BE",
+      "name": "f",
+      "usn": "SS3S",
+      "branch": "CSE",
+      "semester": "4th Sem",
+      "phone": "9007654321",
+      "email": "aa@h.in"
+    },
+    {
+      "teamId": "HK-E4A3F8BE",
+      "name": "llll",
+      "usn": "JHG7",
+      "branch": "CSE",
+      "semester": "2nd Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-86E5BA3B",
+      "name": "llll",
+      "usn": "DF65",
+      "branch": "CSE",
+      "semester": "6th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-86E5BA3B",
+      "name": "g",
+      "usn": "FE3",
+      "branch": "CSD",
+      "semester": "2nd Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-CB15E018",
+      "name": "g",
+      "usn": "JU8",
+      "branch": "CSE",
+      "semester": "6th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-CB15E018",
+      "name": "fghjk",
+      "usn": "M7HH",
+      "branch": "CSE",
+      "semester": "2nd Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-FE0614B2",
+      "name": "g",
+      "usn": "NHY768",
+      "branch": "CSE",
+      "semester": "6th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-871FBBE0",
+      "name": "g",
+      "usn": "HGT67",
+      "branch": "CSE",
+      "semester": "4th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-FC63DB66",
+      "name": "g",
+      "usn": "VGY",
+      "branch": "CSE",
+      "semester": "4th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-0A35E026",
+      "name": "g",
+      "usn": "FR56YH",
+      "branch": "CSD",
+      "semester": "6th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-1960B35E",
+      "name": "g",
+      "usn": "NHY7890",
+      "branch": "CSE",
+      "semester": "6th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-C873F587",
+      "name": "g",
+      "usn": "FTYHNHY7",
+      "branch": "CSE",
+      "semester": "4th Sem",
+      "phone": "8007654321",
+      "email": "abba@h.in"
+    },
+    {
+      "teamId": "HK-521313F5",
+      "name": "Jay",
+      "usn": "HH5",
+      "branch": "CSD",
+      "semester": "4th Sem",
+      "phone": "9090909666",
+      "email": "bjjj@gh.in"
+    },
+    {
+      "teamId": "HK-521313F5",
+      "name": "Veeru",
+      "usn": "JJG6",
+      "branch": "CSD",
+      "semester": "6th Sem",
+      "phone": "6868585535",
+      "email": "ghuh@fg.in"
+    },
+    {
+      "teamId": "HK-521313F5",
+      "name": "Meethu",
+      "usn": "BJJ",
+      "branch": "CSE",
+      "semester": "6th Sem",
+      "phone": "6365538966",
+      "email": "jjj@hhh.in"
+    }
+  ],
+  "admins": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2b$12$PLUUIjJDNcNfRN9pKOCIFe2mTaMvUpe3ryXNA5eE24VZ.Ps5VhCeW",
+      "createdAt": "2026-04-17T10:25:44.859Z"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Register your team for BRAINWAVE — PDA College of Engineering" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <title>Register — BRAINWAVE</title>
+  <script type="module" crossorigin src="/assets/register-BfK-Gq45.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CPaPKTxi.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bbjmy0ho.css">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+
+  <div class="reg-page" id="regPage">
+    <!-- Header -->
+    <div class="reg-header">
+      <a href="/" class="reg-back">← Back</a>
+      <h1 class="reg-title font-display">Register</h1>
+      <p class="reg-subtitle">Build your team and enter the zone.</p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-dot active" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+      <div class="step-dot" data-step="3"></div>
+      <span class="step-label" id="stepLabel">Step 1 / 3</span>
+    </div>
+
+    <!-- STEP 1: Team Info -->
+    <div class="form-step active" id="step1" data-step="1">
+      <div class="field-group">
+        <label class="field-label" for="teamName">Team Name</label>
+        <input type="text" class="field-input" id="teamName" placeholder="Enter your team name" maxlength="50" autocomplete="off" />
+        <div class="field-error" id="teamNameError">Team name is required</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Domain</label>
+        <div class="field-select">
+          <select id="teamDomain">
+            <option value="">Select domain</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Mobile App Development">Mobile App Development</option>
+            <option value="AI / Machine Learning">AI / Machine Learning</option>
+            <option value="IoT / Hardware">IoT / Hardware</option>
+            <option value="Blockchain">Blockchain</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Game Development">Game Development</option>
+            <option value="Open Innovation">Open Innovation</option>
+          </select>
+        </div>
+        <div class="field-error" id="teamDomainError">Please select a domain</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Team Size</label>
+        <div class="size-selector" id="sizeSelector">
+          <button class="size-option selected" data-size="3">3</button>
+          <button class="size-option" data-size="4">4</button>
+          <button class="size-option" data-size="5">5</button>
+        </div>
+        <div class="field-error" id="teamSizeError">Select team size</div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Participants -->
+    <div class="form-step" id="step2" data-step="2">
+      <div id="participantsContainer"></div>
+    </div>
+
+    <!-- STEP 3: Review -->
+    <div class="form-step" id="step3" data-step="3">
+      <div id="reviewContent"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Actions -->
+  <div class="form-actions" id="formActions">
+    <button class="btn-secondary" id="btnBack" style="display:none;">← Back</button>
+    <button class="btn-primary" id="btnNext">Next →</button>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay confirm-modal" id="confirmModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title font-display">Confirm Submission</h3>
+      <p class="text-muted" style="margin-bottom: var(--sp-4);">
+        Please verify all details before submitting. Data cannot be modified after submission.
+      </p>
+      <div id="confirmSummary"></div>
+      <div class="confirm-actions">
+        <button class="btn-confirm-cancel" id="btnConfirmCancel">Edit</button>
+        <button class="btn-confirm-ok" id="btnConfirmSubmit">
+          Submit Registration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</body>
+</html>

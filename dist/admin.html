@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0B0B0C" />
+  <title>Admin — BRAINWAVE</title>
+  <script type="module" crossorigin src="/assets/admin-D5zuMib4.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CPaPKTxi.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bbjmy0ho.css">
+</head>
+<body>
+  <div class="noise-overlay" style="opacity: 0.03;"></div>
+
+  <div class="admin-page" id="adminPage">
+
+    <!-- LOGIN -->
+    <div class="admin-login" id="adminLogin">
+      <svg class="admin-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <h1 class="admin-login-title font-display">Admin Panel</h1>
+      <p class="admin-login-sub">BRAINWAVE · Control Center</p>
+
+      <div class="admin-login-error" id="loginError">Invalid credentials</div>
+
+      <form class="admin-login-form" id="loginForm">
+        <div class="field-group">
+          <label class="field-label" for="adminUser">Username</label>
+          <input type="text" class="field-input" id="adminUser" placeholder="admin" autocomplete="username" />
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="adminPass">Password</label>
+          <input type="password" class="field-input" id="adminPass" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-primary" id="loginBtn">Access Dashboard</button>
+      </form>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <!-- Top Bar -->
+      <div class="admin-topbar">
+        <span class="admin-topbar-title font-display">Dashboard</span>
+        <button class="admin-logout" id="logoutBtn">Logout</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats" id="adminStats">
+        <div class="stat-card">
+          <div class="stat-value" id="statTeams">0</div>
+          <div class="stat-label">Teams</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statMembers">0</div>
+          <div class="stat-label">Members</div>
+        </div>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="admin-controls">
+        <input type="text" class="admin-search" id="searchInput" placeholder="Search teams..." />
+        <div class="admin-filters" id="filterChips">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="Web Development">Web</button>
+          <button class="filter-chip" data-filter="Mobile App Development">Mobile</button>
+          <button class="filter-chip" data-filter="AI / Machine Learning">AI/ML</button>
+          <button class="filter-chip" data-filter="IoT / Hardware">IoT</button>
+          <button class="filter-chip" data-filter="Blockchain">Blockchain</button>
+          <button class="filter-chip" data-filter="Cybersecurity">Cyber</button>
+          <button class="filter-chip" data-filter="Game Development">Game</button>
+          <button class="filter-chip" data-filter="Open Innovation">Open</button>
+        </div>
+      </div>
+
+      <!-- Team List -->
+      <div class="team-list" id="teamList">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <div class="empty-state-text">No registrations yet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Bar -->
+  <div class="admin-export-bar" id="exportBar" style="display:none;">
+    <button class="btn-export" id="exportBtn">↓ Export CSV</button>
+  </div>
+
+  <!-- Team Detail Modal -->
+  <div class="modal-overlay" id="teamModal">
+    <div class="modal-sheet" style="position:relative;">
+      <div class="modal-handle"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="teamModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation -->
+  <div class="modal-overlay confirm-modal" id="deleteModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title font-display" style="color: var(--error);">Delete Team?</h3>
+      <p class="text-muted">This action cannot be undone. All team data will be permanently removed.</p>
+      <div class="confirm-actions">
+        <button class="btn-confirm-cancel" id="deleteCancelBtn">Cancel</button>
+        <button class="btn-confirm-ok" id="deleteConfirmBtn" style="background: var(--error); box-shadow: none;">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+</body>
+</html>
