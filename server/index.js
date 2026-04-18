@@ -31,10 +31,10 @@ app.use(helmet({
   contentSecurityPolicy: IS_PROD ? {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://api.fontshare.com", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://api.fontshare.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com"],
-      imgSrc: ["'self'", "data:"],
+      fontSrc: ["'self'", "https://api.fontshare.com", "https://cdn.fontshare.com", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "data:"],
+      imgSrc: ["'self'", "data:", "blob:"],
       connectSrc: ["'self'"],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
