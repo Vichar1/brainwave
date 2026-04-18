@@ -73,7 +73,7 @@ export default function adminRoutes(db) {
         return res.status(400).json({ error: 'Invalid credential format' });
       }
 
-      const admin = db.getAdmin(username.trim());
+      const admin = await db.getAdmin(username.trim());
 
       // SECURITY: Constant-time comparison — always run bcrypt even if user not found
       // Prevents timing attacks that reveal valid usernames
@@ -109,9 +109,9 @@ export default function adminRoutes(db) {
   // ============================================
   // GET ALL TEAMS
   // ============================================
-  router.get('/teams', authMiddleware, (req, res) => {
+  router.get('/teams', authMiddleware, async (req, res) => {
     try {
-      const teams = db.getAllTeams();
+      const teams = await db.getAllTeams();
       res.json({ teams, total: teams.length });
     } catch (err) {
       console.error('Fetch teams error:', err.message);
@@ -122,9 +122,9 @@ export default function adminRoutes(db) {
   // ============================================
   // GET STATS
   // ============================================
-  router.get('/stats', authMiddleware, (req, res) => {
+  router.get('/stats', authMiddleware, async (req, res) => {
     try {
-      const stats = db.getStats();
+      const stats = await db.getStats();
       res.json(stats);
     } catch (err) {
       console.error('Stats error:', err.message);
@@ -135,7 +135,7 @@ export default function adminRoutes(db) {
   // ============================================
   // GET SINGLE TEAM
   // ============================================
-  router.get('/teams/:teamId', authMiddleware, (req, res) => {
+  router.get('/teams/:teamId', authMiddleware, async (req, res) => {
     try {
       const { teamId } = req.params;
       
@@ -144,7 +144,7 @@ export default function adminRoutes(db) {
         return res.status(400).json({ error: 'Invalid team ID format' });
       }
 
-      const team = db.getTeam(teamId);
+      const team = await db.getTeam(teamId);
 
       if (!team) {
         return res.status(404).json({ error: 'Team not found' });
@@ -170,7 +170,7 @@ export default function adminRoutes(db) {
         return res.status(400).json({ error: 'Invalid team ID format' });
       }
 
-      const team = db.getTeam(teamId);
+      const team = await db.getTeam(teamId);
       if (!team) {
         return res.status(404).json({ error: 'Team not found' });
       }
