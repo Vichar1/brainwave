@@ -1,104 +1,37 @@
 /**
- * HACKATHON 1.0 — JSON File Database
- * Zero-dependency, zero-compilation, fully atomic
+ * HACKATHON 1.0 — Supabase Database Layer
+ * Persistent cloud storage via Supabase
  * 
- * SECURITY: Write mutex prevents race conditions
+ * SECURITY: Write operations use service-role key, 
+ * all inputs validated before DB calls
  */
 
-import { readFileSync, writeFileSync, existsSync, renameSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+let supabase = null;
 
-const DB_PATH = join(__dirname, 'hackathon.db.json');
-
-// Default database structure
-const DEFAULT_DB = {
-  teams: [],
-  participants: [],
-  admins: [],
-};
-
-class JsonDB {
-  constructor(filePath) {
-    this.filePath = filePath;
-    this._writeLock = false;
-    this._writeQueue = [];
-    this.data = this._load();
-    this._seedAdmin();
+class SupabaseDB {
+  constructor(client) {
+    this.supabase = client;
+    this._initialized = false;
   }
 
-  _load() {
-    try {
-      if (existsSync(this.filePath)) {
-        const raw = readFileSync(this.filePath, 'utf-8');
-        const data = JSON.parse(raw);
-        // Validate structure
-        if (!data.teams || !data.participants || !data.admins) {
-          console.warn('⚠ DB structure invalid, merging with defaults');
-          return { ...JSON.parse(JSON.stringify(DEFAULT_DB)), ...data };
-        }
-        return data;
-      }
-    } catch (err) {
-      console.error('DB load error, creating fresh DB:', err.message);
-    }
-    return JSON.parse(JSON.stringify(DEFAULT_DB));
+  async init() {
+    if (this._initialized) return;
+    await this._seedAdmin();
+    this._initialized = true;
+    console.log('✓ Supabase database connected');
   }
 
-  /**
-   * Atomic write with temp file + rename pattern.
-   * Prevents data corruption if process crashes mid-write.
-   */
-  _save() {
-    try {
-      const tempPath = this.filePath + '.tmp';
-      writeFileSync(tempPath, JSON.stringify(this.data, null, 2), 'utf-8');
-      renameSync(tempPath, this.filePath);
-    } catch (err) {
-      console.error('DB save error:', err.message);
-      throw new Error('Database write failed');
-    }
-  }
+  async _seedAdmin() {
+    // Check if admin exists
+    const { data: admins } = await this.supabase
+      .from('admins')
+      .select('id')
+      .limit(1);
 
-  /**
-   * Serialized write access — prevents race conditions from concurrent requests.
-   * Wraps a mutation callback in a queue to prevent overlapping writes.
-   */
-  withWriteLock(fn) {
-    return new Promise((resolve, reject) => {
-      const execute = () => {
-        this._writeLock = true;
-        try {
-          const result = fn();
-          this._save();
-          resolve(result);
-        } catch (err) {
-          reject(err);
-        } finally {
-          this._writeLock = false;
-          // Process next queued write
-          if (this._writeQueue.length > 0) {
-            const next = this._writeQueue.shift();
-            next();
-          }
-        }
-      };
-
-      if (this._writeLock) {
-        this._writeQueue.push(execute);
-      } else {
-        execute();
-      }
-    });
-  }
-
-  _seedAdmin() {
-    if (this.data.admins.length === 0) {
-      // SECURITY: Admin password from env, or generate a random one
+    if (!admins || admins.length === 0) {
       const adminPassword = process.env.ADMIN_PASSWORD;
       if (!adminPassword) {
         console.error('✗ ADMIN_PASSWORD not set in .env — cannot create admin account');
@@ -106,92 +39,207 @@ class JsonDB {
         return;
       }
       const hash = bcrypt.hashSync(adminPassword, 12);
-      this.data.admins.push({
-        id: 1,
-        username: 'admin',
-        password: hash,
-        createdAt: new Date().toISOString(),
-      });
-      this._save();
-      // SECURITY: Never log the actual password
-      console.log('✓ Default admin account initialized');
+      const { error } = await this.supabase
+        .from('admins')
+        .insert({ username: 'admin', password: hash });
+
+      if (error) {
+        console.error('✗ Failed to seed admin:', error.message);
+      } else {
+        console.log('✓ Default admin account initialized');
+      }
     }
   }
 
   // ---- ADMIN ----
-  getAdmin(username) {
+  async getAdmin(username) {
     if (typeof username !== 'string') return null;
-    return this.data.admins.find(a => a.username === username) || null;
+    const { data } = await this.supabase
+      .from('admins')
+      .select('*')
+      .eq('username', username)
+      .single();
+    return data || null;
   }
 
   // ---- TEAMS ----
-  getAllTeams() {
-    return this.data.teams.map(t => ({
-      ...t,
-      participants: this.data.participants.filter(p => p.teamId === t.teamId),
-    })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }
+  async getAllTeams() {
+    const { data: teams, error } = await this.supabase
+      .from('teams')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  getTeam(teamId) {
-    if (typeof teamId !== 'string') return null;
-    const team = this.data.teams.find(t => t.teamId === teamId);
-    if (!team) return null;
-    return {
-      ...team,
-      participants: this.data.participants.filter(p => p.teamId === teamId),
-    };
-  }
+    if (error) {
+      console.error('DB getAllTeams error:', error.message);
+      return [];
+    }
 
-  teamNameExists(teamName) {
-    if (typeof teamName !== 'string') return false;
-    return this.data.teams.some(t => t.teamName.toLowerCase() === teamName.toLowerCase());
-  }
+    // Fetch all participants in one query
+    const teamIds = teams.map(t => t.team_id);
+    const { data: participants } = await this.supabase
+      .from('participants')
+      .select('*')
+      .in('team_id', teamIds);
 
-  usnExists(usnList) {
-    if (!Array.isArray(usnList)) return [];
-    const allUSNs = this.data.participants.map(p => p.usn.toUpperCase());
-    return usnList.filter(usn => allUSNs.includes(usn.toUpperCase()));
-  }
-
-  async insertTeam(team, participants) {
-    return this.withWriteLock(() => {
-      this.data.teams.push({
-        teamId: team.teamId,
-        teamName: team.teamName,
-        domain: team.domain,
-        teamSize: team.teamSize,
-        createdAt: new Date().toISOString(),
-      });
-
-      participants.forEach(p => {
-        this.data.participants.push({
-          teamId: team.teamId,
+    // Map participants to teams
+    return teams.map(t => ({
+      teamId: t.team_id,
+      teamName: t.team_name,
+      domain: t.domain,
+      teamSize: t.team_size,
+      createdAt: t.created_at,
+      participants: (participants || [])
+        .filter(p => p.team_id === t.team_id)
+        .map(p => ({
+          teamId: p.team_id,
           name: p.name,
           usn: p.usn,
           branch: p.branch,
           semester: p.semester,
           phone: p.phone,
           email: p.email,
-        });
+        })),
+    }));
+  }
+
+  async getTeam(teamId) {
+    if (typeof teamId !== 'string') return null;
+
+    const { data: team } = await this.supabase
+      .from('teams')
+      .select('*')
+      .eq('team_id', teamId)
+      .single();
+
+    if (!team) return null;
+
+    const { data: participants } = await this.supabase
+      .from('participants')
+      .select('*')
+      .eq('team_id', teamId);
+
+    return {
+      teamId: team.team_id,
+      teamName: team.team_name,
+      domain: team.domain,
+      teamSize: team.team_size,
+      createdAt: team.created_at,
+      participants: (participants || []).map(p => ({
+        teamId: p.team_id,
+        name: p.name,
+        usn: p.usn,
+        branch: p.branch,
+        semester: p.semester,
+        phone: p.phone,
+        email: p.email,
+      })),
+    };
+  }
+
+  async teamNameExists(teamName) {
+    if (typeof teamName !== 'string') return false;
+    const { data } = await this.supabase
+      .from('teams')
+      .select('id')
+      .ilike('team_name', teamName.trim())
+      .limit(1);
+    return data && data.length > 0;
+  }
+
+  async usnExists(usnList) {
+    if (!Array.isArray(usnList) || usnList.length === 0) return [];
+    const upperList = usnList.map(u => u.toUpperCase());
+    const { data } = await this.supabase
+      .from('participants')
+      .select('usn')
+      .in('usn', upperList);
+    return (data || []).map(p => p.usn);
+  }
+
+  async insertTeam(team, participants) {
+    // Insert team
+    const { error: teamError } = await this.supabase
+      .from('teams')
+      .insert({
+        team_id: team.teamId,
+        team_name: team.teamName,
+        domain: team.domain,
+        team_size: team.teamSize,
       });
-    });
+
+    if (teamError) {
+      console.error('DB insertTeam error:', teamError.message);
+      throw new Error('Failed to save team');
+    }
+
+    // Insert participants
+    const rows = participants.map(p => ({
+      team_id: team.teamId,
+      name: p.name,
+      usn: p.usn,
+      branch: p.branch,
+      semester: p.semester,
+      phone: p.phone,
+      email: p.email,
+    }));
+
+    const { error: partError } = await this.supabase
+      .from('participants')
+      .insert(rows);
+
+    if (partError) {
+      console.error('DB insertParticipants error:', partError.message);
+      // Rollback team
+      await this.supabase.from('teams').delete().eq('team_id', team.teamId);
+      throw new Error('Failed to save participants');
+    }
   }
 
   async deleteTeam(teamId) {
-    return this.withWriteLock(() => {
-      this.data.teams = this.data.teams.filter(t => t.teamId !== teamId);
-      this.data.participants = this.data.participants.filter(p => p.teamId !== teamId);
-    });
+    // Participants are deleted via CASCADE in DB schema
+    const { error } = await this.supabase
+      .from('teams')
+      .delete()
+      .eq('team_id', teamId);
+
+    if (error) {
+      console.error('DB deleteTeam error:', error.message);
+      throw new Error('Failed to delete team');
+    }
   }
 
-  getStats() {
+  async getStats() {
+    const { count: totalTeams } = await this.supabase
+      .from('teams')
+      .select('*', { count: 'exact', head: true });
+
+    const { count: totalParticipants } = await this.supabase
+      .from('participants')
+      .select('*', { count: 'exact', head: true });
+
     return {
-      totalTeams: this.data.teams.length,
-      totalParticipants: this.data.participants.length,
+      totalTeams: totalTeams || 0,
+      totalParticipants: totalParticipants || 0,
     };
   }
 }
 
 export function initDB() {
-  return new JsonDB(DB_PATH);
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_KEY;
+
+  if (!url || !key) {
+    console.error('✗ FATAL: SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in .env');
+    process.exit(1);
+  }
+
+  supabase = createClient(url, key);
+  const db = new SupabaseDB(supabase);
+
+  // Initialize asynchronously (seed admin, etc.)
+  db.init().catch(err => {
+    console.error('✗ Database initialization failed:', err.message);
+  });
+
+  return db;
 }
